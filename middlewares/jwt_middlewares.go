@@ -1,21 +1,35 @@
 package middlewares
 
 import (
-	// "log"
-	// "os"
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 )
 
-// func GetSecretKey() string {
-// 	if err := godotenv.Load(); err != nil {
-// 		log.Fatal("Error loading .env file")
-// 	}
-// 	return os.Getenv("JWT_KEY")
-// }
+func GetSecretKey() string {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		fmt.Fprintf(os.Stderr, "Unable to identify current directory (needed to load .env.test)")
+		os.Exit(1)
+	}
+	basepath := filepath.Dir(file)
+	err := godotenv.Load(filepath.Join(basepath, "../.env"))
+	fmt.Println(err)
+	if err != nil {
+		// if err := godotenv.Load("../env"); err != nil {
+			fmt.Println(err)
+			log.Fatal("Error loading .env file")
+		// }
+	}
+	return os.Getenv("JWT_KEY")
+}
 
 func GenerateToken(userId int, userEmail string) (string, error) {
 	mapClaim := jwt.MapClaims{}
@@ -27,7 +41,7 @@ func GenerateToken(userId int, userEmail string) (string, error) {
 
 	// key
 
-	return token.SignedString([]byte("tes"))
+	return token.SignedString([]byte(GetSecretKey()))
 }
 
 func HandleLogin(c echo.Context) (int, string) {

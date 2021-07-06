@@ -13,7 +13,5 @@ type Checkout struct {
 
 type CheckoutResponse struct {
 	models.Response
-	// Products   []product.Product `gorm:"many2many:cart_items;" json:"product"`
-	// CustomerID uint              `json:"customer_id"`
 	Data Checkout `json:"data"`
 }

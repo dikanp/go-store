@@ -2,6 +2,7 @@ package routes
 
 import (
 	"AltaStore/controllers"
+	"AltaStore/middlewares"
 	// "AltaStore/middlewares"
 
 	"github.com/labstack/echo"
@@ -13,7 +14,7 @@ func New() *echo.Echo {
 	e.POST("/register", controllers.RegisterController)
 	e.POST("/login", controllers.LoginController)
 	eJwt := e.Group("/")
-	eJwt.Use(middleware.JWT([]byte("tes")))
+	eJwt.Use(middleware.JWT([]byte(middlewares.GetSecretKey())))
 	eJwt.GET("customers", controllers.GetCustomerController)
 	eJwt.GET("products", controllers.GetProductsController)
 	eJwt.GET("products?category_id=id", controllers.GetProductsByCategoryController)

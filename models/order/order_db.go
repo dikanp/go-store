@@ -14,7 +14,7 @@ type Order struct {
 	StatusPayment  bool
 	TotalAmount    int
 	OrderDate      time.Time
-	Address         string
+	Address        string
 	StatusDeliver  string
 	PhoneNumber    string
 	Payment_Method string
